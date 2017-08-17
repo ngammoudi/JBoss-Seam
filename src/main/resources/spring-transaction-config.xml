@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:seam="http://jboss.com/products/seam/spring-seam" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+                           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+                           http://jboss.com/products/seam/spring-seam http://jboss.com/products/seam/spring-seam-2.0.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:bdtest" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+	</bean>
+	<bean id="sessionFactorySpring"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.businessdecision.seampoc.model.User
+				</value>
+				<value>com.businessdecision.seampoc.model.Employee
+				</value>
+				<value>com.businessdecision.seampoc.model.Role
+				</value>
+			</list>
+		</property>
+		<!--
+			<property name="exposeTransactionAwareSessionFactory" value="false">
+		-->
+		<!--		</property>-->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.HSQLDialect
+				</prop>
+				<!--
+					Write all SQL statements to console. This is an alternative to
+					setting the -#-> log category org.hibernate.SQL to debug.
+				-->
+				<prop key="hibernate.show_sql">true</prop>
+
+				<!-- Pretty print the SQL in the log and console. -->
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="sessionFactory" class="org.jboss.seam.ioc.spring.SeamManagedSessionFactoryBean">
+		<property name="sessionName" value="session"></property>
+	</bean>
+	<seam:configure-scopes />
+
+
+	<!-- Sample Hibernate Configuration -->
+	<bean id="hibernateTransactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="dao" abstract="true">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+</beans>

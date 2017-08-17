@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+	login-view-id="/admin/login.xhtml">
+
+	<page view-id="/login.xhtml">
+		<navigation>
+			<rule if="#{identity.loggedIn}">
+				<redirect view-id="/employeeList.xhtml" />
+			</rule>
+		</navigation>
+	</page>
+	<page view-id="/employeeList.xhtml"
+		action="#{employeeAction.readAllEmployees}">
+		<navigation
+			from-action="#{employeeAction.initEmployee}">
+			<redirect view-id="/editEmployee.xhtml" />
+		</navigation>
+		<navigation>
+		<rule if-outcome="editEmployee">
+				<redirect view-id="/editEmployee.xhtml" />
+			</rule>
+		</navigation>
+		<navigation
+			from-action="#{employeeAction.deleteEmployee(employee)}">
+			<redirect view-id="/employeeList.xhtml" />
+		</navigation>
+		<navigation
+			from-action="#{employeeAction.sendMail}">
+			<redirect view-id="/mail.xhtml" />
+		</navigation>
+	</page>
+	<page view-id="/editEmployee.xhtml">
+		<navigation
+			from-action="#{employeeAction.saveEmployee(employee)}">
+			<redirect view-id="/employeeList.xhtml" />
+		</navigation>
+		<navigation
+			from-action="#{employeeAction.updateEmployee(employee)}">
+			<redirect view-id="/employeeList.xhtml" />
+		</navigation>
+	</page>
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message>Not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message>Not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message>Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message>You don't have permission to do this</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/login.xhtml">
+            <message>Please log in first</message>
+        </redirect>
+    </exception>
+     
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message>Unexpected error, please try again</message>
+        </redirect>
+    </exception>
+ <exception class="javax.persistence.OptimisticLockException">
+ <end-conversation before-redirect="true" />
+ 
+           <redirect view-id="/editEmployee.xhtml">
+           <message>Another user changed the same data, please try again</message>
+           </redirect>
+      </exception>
+
+</pages>

@@ -1,0 +1,8 @@
+<!--<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">-->
+<!--<suite name="jboss-seam-poc">-->
+<!--  <test verbose="2" name="com.businessdecision.seampoc.dao.AuthenticatorTest" annotations="JDK">-->
+<!--    <classes>-->
+<!--      <class name="com.businessdecision.seampoc.dao.AuthenticatorTest"/>-->
+<!--    </classes>-->
+<!--  </test>-->
+<!--</suite>-->

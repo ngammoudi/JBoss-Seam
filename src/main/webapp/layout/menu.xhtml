@@ -1,0 +1,26 @@
+<rich:toolBar 
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:s="http://jboss.com/products/seam/taglib"
+     xmlns:rich="http://richfaces.ajax4jsf.org/rich">
+     <rich:toolBarGroup>
+         <h:outputText value="#{projectName}:"/>
+          <s:link view="/home.xhtml">  <h:graphicImage
+	url="/img/home.png" alt="home" title="#{messages['home']}" 
+	></h:graphicImage>
+      </s:link>
+     </rich:toolBarGroup>
+     <rich:toolBarGroup location="right">
+         <h:outputText value="#{messages['welcome']}, #{identity.username}" rendered="#{identity.loggedIn}"/>
+         
+         <s:link view="/login.xhtml"  rendered="#{not identity.loggedIn}"><h:graphicImage
+	url="/img/login.png" alt="home" title="#{messages['login']}" 
+	></h:graphicImage></s:link>
+         <s:link view="/home.xhtml"  action="#{identity.logout}" rendered="#{identity.loggedIn}">
+         <h:graphicImage
+	url="/img/logout.png" alt="home" title="#{messages['logout']}" 
+	></h:graphicImage></s:link>
+     </rich:toolBarGroup>
+</rich:toolBar>

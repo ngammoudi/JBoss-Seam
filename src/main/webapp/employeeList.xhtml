@@ -1,0 +1,138 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages styleClass="message" />
+
+		<h:form id="login">
+
+			<rich:panel>
+				<f:facet name="header">
+					<s:div>
+						<h:outputText value="#{messages['list']}" />
+					</s:div>
+				</f:facet>
+				<rich:spacer height="30" />
+  <rich:dataTable value="#{employeeList}" var="employee" width="300px" columnClasses="center"
+        rows="5" reRender="ds" id="man" onRowMouseOver="this.style.backgroundColor='#F1F1FF'"
+					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" >
+				
+					<rich:column id="id"  style="width:6%" sortBy="#{employee.id}">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText" value="#{messages['Id']}" />
+						</f:facet>
+						<h:outputText value="#{employee.id}" />
+					</rich:column>
+					
+					<rich:column id="firstname" style="width:18%" sortBy="#{employee.firstName}"  filterBy="#{employee.firstName}" filterEvent="onkeyup" colspan="2">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['employee_firstName']}" />
+						</f:facet>
+						<h:outputText value="#{employee.firstName}"  />
+					</rich:column>
+					<rich:column id="lastname" style="width:18%"  sortBy="#{employee.lastName}" filterBy="#{employee.lastName}" filterEvent="onkeyup">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['employee_lastName']}" />
+						</f:facet>
+						<h:outputText value="#{employee.lastName}" />
+					</rich:column>
+					<rich:column width="200px" id="email"
+						sortBy="#{employee.emailAddress}">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['employee_email']}" />
+						</f:facet>
+						<h:outputText value="#{employee.emailAddress}" />
+					</rich:column>
+					<rich:column   id="birthDate" style="width:18%"
+						sortBy="#{employee.birthDate}">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['birth_date']}" />
+						</f:facet>
+						<h:outputText value="#{employee.birthDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" type="date" timeZone="Africa/Tunis"/>
+
+						</h:outputText>
+					</rich:column>
+
+					<rich:column style="width:5%;" id="vin">
+						<f:facet name="header">
+							<h:outputText styleClass="headerText"
+								value="#{messages['action']}" />
+						</f:facet>
+						<h:panelGrid columns="2" style="width:100%;">
+							<h:commandButton
+								action="#{employeeAction.editEmployee(employee)}"
+								image="/img/edit.png" title="#{messages['icon_edit']}" />
+
+							<a4j:commandButton
+								action="#{employeeAction.prepareEmployeeToDelete(employee)}"
+								image="/img/delete.png" title="#{messages['icon_delete']}"
+								onclick="javascript:Richfaces.showModalPanel('panel');"
+								rendered="#{s:hasRole('SuperAdmin')}" style="float:right;" />
+						</h:panelGrid>
+					</rich:column>
+			  <f:facet name="footer">
+                <rich:datascroller id="ds"></rich:datascroller>
+            </f:facet>
+        </rich:dataTable>
+
+				<rich:modalPanel id="panel" autosized="true" width="250"
+					height="120"  >
+					<f:facet name="header" >
+						<h:graphicImage
+	url="/img/attention.png" alt="home"  
+	></h:graphicImage>
+					</f:facet>
+					<f:facet name="controls">
+					<h:graphicImage
+	url="/img/cancel.png" alt="home"  
+	style="cursor: pointer"
+							onclick="javascript:Richfaces.hideModalPanel('panel')">
+					
+							</h:graphicImage>
+					</f:facet>
+					<h:outputText value="#{messages['msg_delete']}"></h:outputText>
+					<br />
+					<br />
+					<h:panelGrid columns="2" width="100%">
+
+						<h:panelGroup style="float:left;">
+							<h:commandButton value="#{messages['cancel']}"
+								styleClass="button"
+								onclick="javascript:Richfaces.hideModalPanel('panel')" />
+						</h:panelGroup>
+						<h:panelGroup style="float:right;">
+							<s:button action="#{employeeAction.deleteEmployee(employee)}"
+								reRender="Table" value="#{messages['delete']}"
+								styleClass="button"
+								onclick="javascript:Richfaces.hideModalPanel('panel')" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</rich:modalPanel>
+
+				<div class="actionButtons"><h:commandButton
+					value="#{messages['add']}" action="#{employeeAction.initEmployee}"
+					styleClass="button" />
+					<h:commandButton
+					value="#{messages['send']}" action="#{employeeAction.sendMail}"
+					styleClass="button" /></div>
+
+			</rich:panel>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>

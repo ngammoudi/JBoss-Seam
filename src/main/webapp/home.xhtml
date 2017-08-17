@@ -1,0 +1,31 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<h:messages globalOnly="true" styleClass="message" />
+
+		<rich:panel>
+			<f:facet name="header">Bienvenue</f:facet>
+			<p>Ceci est le poc pour Jboss seam</p>
+			<ul>
+				<li>EJB 3.0 Seam components</li>
+				<li>Deployment to TOMCAT</li>
+				<li>Integration testing using TestNG</li>
+				<li>Templated Facelets views</li>
+				<li>PostgreSQL Datasource</li>
+				<li>Default CSS stylesheet</li>
+				<li>Internationalization support</li>
+				<li>Sample security restriction</li>
+			</ul>
+		</rich:panel>
+
+	</ui:define>
+</ui:composition>

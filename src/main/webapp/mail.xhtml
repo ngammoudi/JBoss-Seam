@@ -1,0 +1,88 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="layout/template.xhtml">
+	<ui:define name="navHelper">
+
+	</ui:define>
+	<ui:define name="body">
+		<rich:panel>
+			<f:facet name="header">
+				<s:div>
+					<h:panelGrid columns="2" width="100%">
+						<h:panelGroup style="float:left;">
+							<h:outputText value="#{messages['write_mail_to']} " />
+						</h:panelGroup>
+
+					</h:panelGrid>
+				</s:div>
+			</f:facet>
+			<h:form id="emailTemplateForm">
+
+				<h:messages styleClass="message"></h:messages>
+
+
+				<br></br>
+				<div id="suggestbox"><h:panelGroup>
+					<rich:separator height="7" width="600"></rich:separator>
+					<h:panelGrid columns="2">
+						<h:outputText value="#{messages['mail_to']}" style="float:left;"><rich:spacer width="22"></rich:spacer></h:outputText>
+
+						<h:inputText id="suggest"
+							style=" width : 208px;" />
+
+						<rich:suggestionbox for="suggest"
+							suggestionAction="#{employeeAction.getAllMailAddress}"
+							var="suggest">
+
+							<h:column>
+
+								<h:outputText value="#{suggest.emailAddress}" />
+
+							</h:column>
+
+						</rich:suggestionbox>
+					</h:panelGrid>
+				</h:panelGroup></div>
+				<div id="subjectbox"><h:panelGroup>
+					<rich:separator height="7" width="600"></rich:separator>
+					<h:panelGrid columns="2">
+						<h:outputText value="#{messages['message_subject']}"></h:outputText>
+						<h:inputText requiredMessage="#{messages['required_subject']}"
+							value="#{employeeAction.subject}" style=" width : 446px;"
+							required="true"></h:inputText>
+					</h:panelGrid>
+					<rich:separator height="7" width="600"></rich:separator>
+				</h:panelGroup></div>
+
+				<br></br>
+				<rich:editor value="#{employeeAction.text}" theme="advanced"
+					plugins="save,paste" width="600">
+
+					<f:param name="theme_advanced_buttons1"
+						value="bold,italic,underline, cut,copy,paste,pasteword" />
+
+					<f:param name="theme_advanced_toolbar_location" value="top" />
+
+					<f:param name="theme_advanced_toolbar_align" value="left" />
+
+				</rich:editor>
+				<h:panelGrid columns="2" width="100%">
+					<h:panelGroup style="float:left;">
+						<s:button view="/employeeList.xhtml" value="#{messages['cancel']}"
+							styleClass="button"></s:button>
+					</h:panelGroup>
+					<h:panelGroup style="float:right;">
+						<h:commandButton value="#{messages['send']}"
+							action="#{employeeAction.send}" styleClass="button" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+		</rich:panel>
+	</ui:define>
+</ui:composition>

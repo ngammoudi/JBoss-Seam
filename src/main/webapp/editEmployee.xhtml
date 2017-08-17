@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+	template="layout/template.xhtml">
+
+	<ui:define name="body">
+		<s:validateAll>
+			<rich:panel>
+				<f:facet name="header">
+					<s:div>
+						<h:outputText value="#{messages['create_new']}"
+							rendered="#{empty employee.id}" />
+						<h:outputText
+							value="#{messages['edit_old']} #{employee.firstName}"
+							rendered="#{!empty employee.id}" />
+					</s:div>
+				</f:facet>
+
+				<h:form id="editEmployeeform">
+					<rich:messages styleClass="message">
+
+						<f:facet name="errorMarker">
+							<h:graphicImage value="/img/error.png" />
+
+						</f:facet>
+
+					</rich:messages>
+					<s:div>
+						<table>
+
+							<tbody>
+
+								<tr>
+									<td><s:div id="employeenamelabel">
+								#{messages['employee_firstName']} *
+						</s:div></td>
+									<td><s:div id="employeenameinput">
+										<h:inputText value="#{employee.firstName}" required="true"
+											requiredMessage="#{messages['insert_firstName']}"
+											validatorMessage="#{messages['length']}"></h:inputText>
+
+									</s:div></td>
+								</tr>
+								<tr>
+									<td><s:div id="employeelastnamelabel">
+								#{messages['employee_lastName']} *
+						</s:div></td>
+									<td><s:div id="employeelastnameinput">
+										<h:inputText value="#{employee.lastName}" required="true"
+											requiredMessage="#{messages['insert_lastName']}"></h:inputText>
+
+									</s:div></td>
+								</tr>
+								<tr>
+									<td><s:div id="employeedatenamelabel">
+								#{messages['birth_date']} *
+						</s:div></td>
+									<td><s:div id="employeedatenameinput">
+										<rich:calendar value="#{employee.birthDate}" required="true" requiredMessage="#{messages['insert_birthDate']}"
+											datePattern="dd/MM/yyyy"></rich:calendar>
+									</s:div></td>
+								</tr>
+								<tr>
+									<td><s:div id="employeeemailnamelabel">
+								#{messages['employee_email']} *
+						</s:div></td>
+									<td><s:div id="employeeemailnameinput">
+										<h:inputText value="#{employee.emailAddress}" required="true"
+											requiredMessage="#{messages['insert_email']}"
+											validatorMessage="#{messages['invalid_email']}"
+											style=" width : 167px;"></h:inputText>
+
+									</s:div></td>
+								</tr>
+
+							</tbody>
+						</table>
+					</s:div>
+					<center><rich:separator width="600" height="1"></rich:separator></center>
+					<table align="center">
+						<s:div>
+							<tbody>
+
+								<tr>
+
+									<td><h:commandButton
+										action="#{employeeAction.saveEmployee(employee)}"
+										rendered="#{empty employee.id}" value="#{messages['save']}"
+										styleClass="button" /> <h:commandButton
+										action="#{employeeAction.updateEmployee(employee)}"
+										rendered="#{!empty employee.id}" value="#{messages['update']}"
+										styleClass="button" /></td>
+									<td>
+									<div class="actionButtons"><s:button action="cancel"
+										value="#{messages['cancel']}" view="/employeeList.xhtml"
+										styleClass="button" /></div>
+									</td>
+								</tr>
+
+							</tbody>
+						</s:div>
+					</table>
+				</h:form>
+			</rich:panel>
+		</s:validateAll>
+	</ui:define>
+</ui:composition>
